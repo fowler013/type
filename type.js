@@ -2,6 +2,21 @@ let body = $('body');
 let uppercase = document.getElementById('keyboard-upper-container') // got my ID element through DOM
 let lowercase = document.getElementById('keyboard-lower-container') //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 let keys = document.getElementsByClassName("well well-lg key") // variable for keys
+let sentences = ['ten ate neite ate nee enet ite ate inet ent eate', //this is the array for my sentences
+    'Too ato too nOt enot one totA not anot tOO aNot',
+    'oat itain oat tain nate eate tea anne inant nean',
+    'itant eate anot eat nato inate eat anot tain eat',
+    'nee ene ate ite tent tiet ent ine ene ete ene ate'];
+let i = 0;
+let senIdx = sentences[i];
+let letterNum = 0;
+let letter = senIdx.substring(letterNum, letterNum + 1);
+let senText = document.getElementById('sentence');
+let letterText = document.getElementById('target-letter');
+let moveYellowBlock = document.getElementById('yellow-block')
+$(senText).text(senIdx);
+$(letterText).text(letter);
+
 
 $(uppercase).hide();//this hide my uppercase letters
 
@@ -29,19 +44,46 @@ $(document).ready(function () {
 
 //keys light up when pressed
 $(document).ready(function () {
-    $(body).keypress(function(e) {
+    $(body).keypress(function (e) {
         let key = $('#' + e.which)
         $(key).css('background', 'yellow');
-         $(body).keyup(function (e) {
-        $(key).css('background', '')
+        $(body).keyup(function (e) {
+            $(key).css('background', '')
+        })
+
+        //keys follow the letters in the sentence
+        $(body).keypress(function (e) {
+            if (e.which === sentences[i].charCodeAt(letterNum)) {
+                $(`div #feedback`).text(`correct`).css('color', 'green');
+                letterNum++;
+                letter = senIdx.substring(letterNum, letterNum + 1);
+                $(letterText).text(letter);
+                $(moveYellowBlock).css('left', '+= 17.5px');
+                if (letterNum === senIdx.length) {
+                    i++;
+                    if (i === sentences.length) {
+                        alert('done!');
+                    } else{
+                        senIdx =sentences[i];
+                        $(senText).text(senIdx);
+                        letterNum = 0;
+                        letter = senIdx.substring(letterNum, letterNum + 1)
+                        $(letterText).text(letter);
+                        $('#yellow-box').css('left', '15px')
+                        $('#feedback').text('');
+                    }
+                }
+            }
+        })
     })
+
+
 })
 
-//keys don't light up
-$(document).ready(function () {
-   
-    })
-})
+
+
+    //this is the function for my sentence array
+
 
 
 
